@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	const input = form.querySelector('input');
 
 	const mainDiv = document.querySelector('.main');
-	// ul variable points to the ul element with the #invitedList
 	const ul = document.getElementById('invitedList');
 	const liChildren = ul.children;
 
@@ -23,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	div.appendChild(filterCheckbox);
 	mainDiv.insertBefore(div, ul);
 
+	// Event Listener that listens for changes in the checkbox nad if it is checked
+	// it will filter guests that are confirmed 'coming to the party'
+	// and hides the guests who are not confirmed
 	filterCheckbox.addEventListener('change', (e) => {
 		const isChecked = e.target.checked;
 		const lis = ul.children;
@@ -47,10 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
+	// We use this function to create <li> elements
 	function createLI(text) {
 		function createElement(elementName, property, value) {
 			const element = document.createElement(elementName);
-			// ?
 	    	element[property] = value;
 	    	if (elementName == 'span') {
 	    		element.className = 'invitee-person';
@@ -112,17 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
 	    e.preventDefault();
 
 	    const text = input.value;
-	    input.value = '';
+		input.value = '';
 
-
-	    if (namesInvitees.includes(text) || text === '') {
-	    	alert(`${text} already in list or name is set to empty.`);
+	    if (namesInvitees.includes(text.toUpperCase()) || text === '') {
+			form.style.border = '2px red solid';
+			form.className = 'invalidGuest';
+	    	//alert(`${text} already in list or name is set to empty.`);
 	    } else {
-	    	namesInvitees.push(text);
+			form.style.border = '';
+			namesInvitees.push(text.toUpperCase());
+			form.className = '';
 
 	    	const li = createLI(text);
 	    	ul.appendChild(li); 
-	    }     
+		}
 	});
 
 	// Create Event Listener that allows us to add/remove className of the
@@ -205,10 +210,3 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 });
-
-// Black input added to guest 
-// Duplicate names (DONE)
-// checked box Confirmed, uncheck Confirm (DONE)
-// Hide those who haven't responded, --> hide Confirmed text checkbox (DONE)
-// Add notes to each list item (DONE)
-// Use local storage to save state of application
